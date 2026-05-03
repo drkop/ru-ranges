@@ -1,0 +1,6 @@
+*.md
+*.conf
+*.json
+*.bak
+*.rsc
+.idea/

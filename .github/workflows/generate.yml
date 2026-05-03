@@ -1,0 +1,36 @@
+name: Generate RU ranges
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate .rsc files
+        run: python generate.py
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest RU ranges
+          body: |
+            Автоматически сгенерированные address-list российских IPv4-префиксов.
+            - `ru_ranges.rsc` — стандартный (записи хранятся постоянно)
+            - `ru_ranges_timeout.rsc` — с timeout=2592000 (30 дней, RAM-only)
+          make_latest: true
+          files: |
+            ru_ranges.rsc
+            ru_ranges_timeout.rsc
