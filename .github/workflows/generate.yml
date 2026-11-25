@@ -34,3 +34,16 @@ jobs:
           files: |
             ru_ranges.rsc
             ru_ranges_timeout.rsc
+
+      - name: Publish direct-download files
+        run: |
+          mkdir -p "$RUNNER_TEMP/ru-ranges-download"
+          cp ru_ranges.rsc ru_ranges_timeout.rsc "$RUNNER_TEMP/ru-ranges-download/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --orphan downloads
+          git clean -fd
+          cp "$RUNNER_TEMP/ru-ranges-download/"* .
+          git add ru_ranges.rsc ru_ranges_timeout.rsc
+          git commit -m "Update generated range files"
+          git push --force origin downloads

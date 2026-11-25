@@ -3,18 +3,21 @@
 Address-list российских IP-префиксов для MikroTik RouterOS. Обновляется ежедневно из данных RIPE NCC.
 ## Скачать
 
-Актуальный файл всегда доступен на странице [Releases](https://github.com/amneziawg-mikrotik/ru-ranges/releases/tag/latest):
+Актуальные файлы доступны по прямым ссылкам — они подходят для скачивания из RouterOS без перенаправления GitHub Releases:
 
 ```
-https://github.com/amneziawg-mikrotik/ru-ranges/releases/download/latest/ru_ranges.rsc
+https://raw.githubusercontent.com/drkop/ru-ranges/downloads/ru_ranges.rsc
+https://raw.githubusercontent.com/drkop/ru-ranges/downloads/ru_ranges_timeout.rsc
 ```
+
+Архивы также доступны на странице [Releases](https://github.com/drkop/ru-ranges/releases/tag/latest).
 
 ## Как это работает
 
 - GitHub Actions запускается ежедневно в 01:00 UTC (04:00 MSK)
 - Скрипт запрашивает все IPv4-префиксы РФ через [RIPE NCC API](https://stat.ripe.net/)
-- Генерируется [`ru_ranges.rsc`](https://github.com/amneziawg-mikrotik/ru-ranges/releases/tag/latest) (~11 000 префиксов) — каждая строка это `/ip firewall address-list add` в list `RU`
-- Файл публикуется как GitHub Release
+- Генерируется [`ru_ranges.rsc`](https://github.com/drkop/ru-ranges/releases/tag/latest) (~11 000 префиксов) — каждая строка это `/ip firewall address-list add` в list `RU`
+- Файлы публикуются как GitHub Release и в ветку `downloads` для прямой загрузки
 
 ## Настройка MikroTik
 
@@ -22,7 +25,7 @@ https://github.com/amneziawg-mikrotik/ru-ranges/releases/download/latest/ru_rang
 
 ```routeros
 /system script add name=update_ru_list policy=read,write,test,ftp source={
-    :local url "https://github.com/amneziawg-mikrotik/ru-ranges/releases/download/latest/ru_ranges.rsc"
+    :local url "https://raw.githubusercontent.com/drkop/ru-ranges/downloads/ru_ranges.rsc"
     :local fileName "ru_ranges.rsc"
 
     # --- Fetch ---
